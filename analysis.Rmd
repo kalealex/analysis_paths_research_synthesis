@@ -1,0 +1,424 @@
+---
+title: "Qualitative Analysis of Analytical Decisions"
+author: "Alex Kale"
+date: "9/5/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Codes
+
+Load in codes from qualitative analysis of analytical decisions.
+
+```{r}
+codes <- read.csv(file="codes-anonymous.csv", header=TRUE, sep=",")
+```
+
+This spreadsheet was constructed through an iterative qualitative coding procedure described in the paper.
+
+## Decision-Making Strategies
+
+### Frequency of Strategies
+
+Looking at the frequency of each kind of strategy used by our participants to manage uncertainty in decisions about analysis paths, we can see that reducing uncertainty is by far the most prevalent strategy, followed by acknowledgement and suppression.
+
+```{r}
+# counts of strategies
+d.strat <- data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes$Strategy=='Acknowledge'),sum(codes$Strategy=='Reduce'),sum(codes$Strategy=='Suppress')),
+  "Percent"=c(sum(codes$Strategy=='Acknowledge'),sum(codes$Strategy=='Reduce'),sum(codes$Strategy=='Suppress'))/length(codes$Decision)*100
+)
+```
+
+```{r echo=FALSE}
+ggplot(d.strat, aes(x=Strategy,y=Frequency)) + geom_bar(stat = 'identity') + geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + theme(panel.background = element_blank(), axis.line = element_line(colour = "black"))
+```
+
+This is approximately what we would hope to see insofar as decisions to reduce uncertainty are most prevalent and decisions to suppress uncertainty are least prevalent.
+
+### Frequencies of Strategies by Context of Mention
+
+Let's take a look at all decisions vs firsthand accounts vs secondhand accounts vs hypothetical scenarios to see if there is a difference in the distribution of strategies. We'll look at percentages as well as raw frequencies of decisions.
+
+```{r}
+# add column to data table of strategies for type of mention
+d.strat.mention <- cbind(d.strat,"Mention"=c("All","All","All"))
+
+# get counts of strategies for:
+# firsthand accounts
+codes.firsthand <- codes %>% filter(Mention=="Firsthand")
+d.strat.mention <- rbind(d.strat.mention, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.firsthand$Strategy=='Acknowledge'),sum(codes.firsthand$Strategy=='Reduce'),sum(codes.firsthand$Strategy=='Suppress')),
+    "Percent"=c(sum(codes.firsthand$Strategy=='Acknowledge'),sum(codes.firsthand$Strategy=='Reduce'),sum(codes.firsthand$Strategy=='Suppress'))/length(codes.firsthand$Decision)*100,
+  "Mention"=c("Firsthand","Firsthand","Firsthand")
+))
+# secondhand accounts
+codes.secondhand <- codes %>% filter(Mention=="Secondhand")
+d.strat.mention <- rbind(d.strat.mention, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.secondhand$Strategy=='Acknowledge'),sum(codes.secondhand$Strategy=='Reduce'),sum(codes.secondhand$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.secondhand$Strategy=='Acknowledge'),sum(codes.secondhand$Strategy=='Reduce'),sum(codes.secondhand$Strategy=='Suppress'))/length(codes.secondhand$Decision)*100,
+  "Mention"=c("Secondhand","Secondhand","Secondhand")
+))
+# hypothetical accounts
+codes.hypothetical <- codes %>% filter(Mention=="Hypothetical")
+d.strat.mention <- rbind(d.strat.mention, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.hypothetical$Strategy=='Acknowledge'),sum(codes.hypothetical$Strategy=='Reduce'),sum(codes.hypothetical$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.hypothetical$Strategy=='Acknowledge'),sum(codes.hypothetical$Strategy=='Reduce'),sum(codes.hypothetical$Strategy=='Suppress'))/length(codes.hypothetical$Decision)*100,
+  "Mention"=c("Hypothetical","Hypothetical","Hypothetical")
+))
+```
+
+```{r echo=FALSE}
+ggplot(d.strat.mention, aes(x=Strategy,y=Frequency)) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
+  facet_grid(~ Mention)
+
+ggplot(d.strat.mention, aes(x="", y=Percent, fill=Strategy)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  # geom_text(aes(label = round(Percent,digits=1)), size=4) +
+  theme_minimal() + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
+  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank()) +
+  facet_grid(~ Mention)
+```
+
+We can see the distibution of decisions across our three kinds of strategies is relatively similar regardless of the kind of mention. Note that the set of all decisions regardless of mention resembles the subsets of firsthand accounts and hypothetical scenarios only. With only 10 observations, it is hard to say much about secondhand accounts based on our codes. Looking at the pie charts showing proportions of each strategy for each kind of mention, we can see that our participants used a strategy of acknowledging uncertainty relatively more, and used a strategy of reducing uncertainty relatively less, in hypothetical scenarios than in accounts of firsthand experiences. Perhaps the scenarios which were posed as hypotheticals by participants during our interviews were more often intractable situations where there was not a clear path to reduce uncertainty. (I will look for some examples if we want to talk about this in the paper.)
+
+### Frequencies of Strategies by Direct vs Indirect Impact
+
+Let's look at the frequencies of strategies for decisions with direct vs indirect impact. We'll look at percentages as well as raw frequencies of decisions.
+
+```{r}
+# add column to data table of strategies for type of mention
+d.strat.impact <- cbind(d.strat,"Impact"=c("Both","Both","Both"))
+
+# get counts of strategies for decisions with:
+# direct impact
+codes.direct <- codes %>% filter(Impact=="Direct")
+d.strat.impact <- rbind(d.strat.impact, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.direct$Strategy=='Acknowledge'),sum(codes.direct$Strategy=='Reduce'),sum(codes.direct$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.direct$Strategy=='Acknowledge'),sum(codes.direct$Strategy=='Reduce'),sum(codes.direct$Strategy=='Suppress'))/length(codes.direct$Decision)*100,
+  "Impact"=c("Direct","Direct","Direct")
+))
+# indirect impact
+codes.indirect <- codes %>% filter(Impact=="Indirect")
+d.strat.impact <- rbind(d.strat.impact, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.indirect$Strategy=='Acknowledge'),sum(codes.indirect$Strategy=='Reduce'),sum(codes.indirect$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.indirect$Strategy=='Acknowledge'),sum(codes.indirect$Strategy=='Reduce'),sum(codes.indirect$Strategy=='Suppress'))/length(codes.indirect$Decision)*100,
+  "Impact"=c("Indirect","Indirect","Indirect")
+))
+```
+
+```{r echo=FALSE}
+ggplot(d.strat.impact, aes(x=Strategy,y=Frequency)) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
+  facet_grid(~ Impact)
+
+ggplot(d.strat.impact, aes(x="", y=Percent, fill=Strategy)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  # geom_text(aes(label = round(Percent,digits=1)), size=4) +
+  theme_minimal() + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
+  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank()) +
+  facet_grid(~ Impact)
+```
+
+We can see that decisions with indirect impact were more often a instances of an acknowledgement strategy than a reduction strategy. This may reflect the fact that decisions with direct impact are decisions about: 
+
+- what to look for in the literature,
+- what to include in the review, 
+- what to code in an evidence table, 
+- how to incorporate evidence into the final written report.
+
+These are predominantly rule-based decisions (i.e., reduction). Whereas decisions with indirect impact are decisions which don't change the content of the written report, such as decisions about:
+
+- review team management,
+- process documentation,
+- checking data quality, risk of bias in studies, and publication bias in the review (unless participants explicitly state that these checks are included in the report or are used to inform inclusion/exclusion),
+- presentation details like visualization layouts and nuaces of framing,
+- what to include in a brief presentation.
+
+Many of these decisions serve the purpose of steering the implementation of scientific process and organizing collaboration among researchers (i.e., acknowledgement). That being said there is still a substantial amount of reduction in decisions with indirect impact.
+
+### Frequencies of Strategies per Stage of Analysis
+
+Next, we look at frequencies and percentages of each strategy at each stage in the analysis process.
+
+```{r}
+# add column to data table of strategies for type of mention
+d.strat.stage <- cbind(d.strat,"Stage"=c("Overall","Overall","Overall"))
+
+# get counts of strategies at the stage of:
+# questions
+codes.questions <- codes %>% filter(Stage.of.Analysis=="Defining questions and objectives")
+d.strat.stage <- rbind(d.strat.stage, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.questions$Strategy=='Acknowledge'),sum(codes.questions$Strategy=='Reduce'),sum(codes.questions$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.questions$Strategy=='Acknowledge'),sum(codes.questions$Strategy=='Reduce'),sum(codes.questions$Strategy=='Suppress'))/length(codes.questions$Decision)*100,
+  "Stage"=c("Define Questions","Define Questions","Define Questions")
+))
+# literature review
+codes.review <- codes %>% filter(Stage.of.Analysis=="Literature review")
+d.strat.stage <- rbind(d.strat.stage, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.review$Strategy=='Acknowledge'),sum(codes.review$Strategy=='Reduce'),sum(codes.review$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.review$Strategy=='Acknowledge'),sum(codes.review$Strategy=='Reduce'),sum(codes.review$Strategy=='Suppress'))/length(codes.review$Decision)*100,
+  "Stage"=c("Lit Review","Lit Review","Lit Review")
+))
+# data collection
+codes.collect <- codes %>% filter(Stage.of.Analysis=="Data collection")
+d.strat.stage <- rbind(d.strat.stage, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.collect$Strategy=='Acknowledge'),sum(codes.collect$Strategy=='Reduce'),sum(codes.collect$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.collect$Strategy=='Acknowledge'),sum(codes.collect$Strategy=='Reduce'),sum(codes.collect$Strategy=='Suppress'))/length(codes.collect$Decision)*100,
+  "Stage"=c("Data Collection","Data Collection","Data Collection")
+))
+# meta-analysis
+codes.meta <- codes %>% filter(Stage.of.Analysis=="Meta-analysis")
+d.strat.stage <- rbind(d.strat.stage, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.meta$Strategy=='Acknowledge'),sum(codes.meta$Strategy=='Reduce'),sum(codes.meta$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.meta$Strategy=='Acknowledge'),sum(codes.meta$Strategy=='Reduce'),sum(codes.meta$Strategy=='Suppress'))/length(codes.meta$Decision)*100,
+  "Stage"=c("Meta-Analysis","Meta-Analysis","Meta-Analysis")
+))
+# quantitative analysis
+codes.quant <- codes %>% filter(Stage.of.Analysis=="Quantitative Analysis")
+d.strat.stage <- rbind(d.strat.stage, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.quant$Strategy=='Acknowledge'),sum(codes.quant$Strategy=='Reduce'),sum(codes.quant$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.quant$Strategy=='Acknowledge'),sum(codes.quant$Strategy=='Reduce'),sum(codes.quant$Strategy=='Suppress'))/length(codes.quant$Decision)*100,
+  "Stage"=c("Quant Analysis","Quant Analysis","Quant Analysis")
+))
+# qualitative analysis
+codes.qual <- codes %>% filter(Stage.of.Analysis=="Qualitative analysis")
+d.strat.stage <- rbind(d.strat.stage, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.qual$Strategy=='Acknowledge'),sum(codes.qual$Strategy=='Reduce'),sum(codes.qual$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.qual$Strategy=='Acknowledge'),sum(codes.qual$Strategy=='Reduce'),sum(codes.qual$Strategy=='Suppress'))/length(codes.qual$Decision)*100,
+  "Stage"=c("Qual Analysis","Qual Analysis","Qual Analysis")
+))
+# communication
+codes.comm <- codes %>% filter(Stage.of.Analysis=="Communication")
+d.strat.stage <- rbind(d.strat.stage, data.frame(
+  "Strategy"=c('Acknowledge','Reduce','Suppress'),
+  "Frequency"=c(sum(codes.comm$Strategy=='Acknowledge'),sum(codes.comm$Strategy=='Reduce'),sum(codes.comm$Strategy=='Suppress')),
+  "Percent"=c(sum(codes.comm$Strategy=='Acknowledge'),sum(codes.comm$Strategy=='Reduce'),sum(codes.comm$Strategy=='Suppress'))/length(codes.comm$Decision)*100,
+  "Stage"=c("Communication","Communication","Communication")
+))
+```
+
+```{r echo=FALSE}
+ggplot(d.strat.stage, aes(x=Strategy,y=Frequency)) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
+  facet_wrap(~ Stage)
+
+ggplot(d.strat.stage, aes(x="", y=Percent, fill=Strategy)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  # geom_text(aes(label = round(Percent,digits=1)), size=4) +
+  theme_minimal() + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
+  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank()) +
+  facet_wrap(~ Stage)
+```
+
+Note that participants used an acknowledgement strategy far more often when defining questions and objectives than they did overall. Multiple participants expressed that they felt this was the most important stage of the research process, so it makes sense that they would spend a lot of time surveying different possible directions and preempting potential issues at this stage in their research. We also see relatively more acknowledgement during literature review, quantitative analysis, and communication than in data collection and meta-analysis. This may reflect the the fact that plans from the outset of an analysis do relatively less to constrain literature review, quantitative analysis, and communication of the review than data collection and meta-analysis. Researchers feel that they need to explore their options when specific mechanisms for reduction (e.g., specific search terms, specific variables to code) are not selected at the outset of the research process. This exploration is a double-edged sword since it no doubt contributes to researcher degrees of freedom in the traditional sense, but it can also serve as a justifiable way for the researcher to orient their analysis toward a practical result. (I'll find a specific example or two to illustrate this idea in the paper.)
+
+## Reasons for Decision-Making
+
+When we were coding our interviews, the following reasons for decisions emerged.
+
+```{r}
+unique(codes$Reason)
+```
+
+Since there are 21 different reasons to analyze, let's group them by common motivational themes in order to reduce the cardinality of reasons and drill down to the patterns of reasoning behind analytical decision-making in research synthesis.
+
+### Motivational Themes
+
+We use these six themes to characterize why researchers make analytical decisions decisions. 
+
+*Principles*: ideals to which the research adheres.
+
+- Consistency
+- Reproducibility
+- Completeness
+
+*Social Factors*: strictly communicative or interpersonal influences on decision-making.
+
+- Confidence through concensus
+- Ease of understanding
+
+*Domain-Specific Factors*: concerns related to the specific domain under study.
+
+- Domain knowledge
+- Conceptual clarity
+
+*Conventions*: standards of practice which reflect established knowledge about research practices.
+
+- Statistical power
+- Convention
+
+*Self-Imposed Constraints*: factors which are under the control of the individual researcher.
+
+- Research questions
+- Caution
+- Preference
+- Lack of knowledge
+
+*External Constraints*: factors beyond the researchers' control at the time of the decision.
+
+- Limited availability of information
+- Limited time and attention 
+- Limited control of research objectives
+- Limited support from software tools
+- Limited foresight
+- Limited tolerance for uncertainty or scientific process
+- Limited resources
+- Limited alternatives
+
+```{r}
+# add a column to the data table for motivations
+codes$Motivation <- with(codes, 
+                         ifelse(Reason %in% c("Consistency", "Reproducibility", "Completeness"), "Principles",
+                            ifelse(Reason %in% c("Confidence through concensus", "Ease of understanding"), "Social Factors",
+                               ifelse(Reason %in% c("Domain knowledge", "Conceptual clarity"), "Domain-Specific Factors",
+                                  ifelse(Reason %in% c("Statistical power", "Convention"), "Conventions",
+                                     ifelse(Reason %in% c("Research questions", "Caution", "Preference", "Lack of knowledge"), "Self-Imposed Constraints",
+                                        "External Constraints"
+                                     )
+                                  )
+                               )
+                            )
+                         )
+                    )
+
+```
+
+### Frequency of Reasons and Motivational Themes
+
+```{r}
+# counts of strategies
+d.motive <- data.frame(
+  "Motivation"=c("Principles","Social Factors","Domain-Specific Factors","Conventions","Self-Imposed Constraints","External Constraints"),
+  "Frequency"=c(sum(codes$Motivation=="Principles"),sum(codes$Motivation=="Social Factors"),sum(codes$Motivation=="Domain-Specific Factors"),sum(codes$Motivation=="Conventions"),sum(codes$Motivation=="Self-Imposed Constraints"),sum(codes$Motivation=="External Constraints")),
+  "Percent"=c(sum(codes$Motivation=="Principles"),sum(codes$Motivation=="Social Factors"),sum(codes$Motivation=="Domain-Specific Factors"),sum(codes$Motivation=="Conventions"),sum(codes$Motivation=="Self-Imposed Constraints"),sum(codes$Motivation=="External Constraints"))/length(codes$Decision)*100
+)
+```
+
+```{r echo=FALSE}
+ggplot(d.motive, aes(x=Motivation,y=Frequency)) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"))
+```
+
+```{r echo=FALSE}
+ggplot(codes, aes(x=Motivation,fill=Reason)) + 
+  geom_bar(stat = 'count') + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"))
+```
+
+```{r echo=FALSE}
+# this one is kinda weird
+ggplot(codes, aes(x=factor(1),fill=Reason)) + 
+  geom_bar(width = 1) + 
+  coord_polar("y", start = 0) +
+  theme_minimal() + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
+  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank()) +
+  facet_wrap(~ Motivation)
+```
+
+(I can provide examples of each of the following once we decide what to highlight in the paper.)
+
+Interestingly self-imposed constaints are the most common motivation for analytical decision-making. This is driven in large part by the influence of research questions. Once a researcher defines their questions and objectives, many other analytical decisions follow. This highlights the importance of early planning in research. 
+
+A similarly prevalent reason for decision-making is completeness, the idea that a researcher should cover their bases and put together a comprehensive analysis. The drive for completeness contributes heavily to the high frequency decisions motivated by principles.
+
+A myriad of external constraints, factors beyond the researchers' control, impact the analysis paths taken by researchers. The two most common reasons of this kind are limited availability of information and limited time and attention to devote to the research. These kinds of situational constraints often represent threats to the validity of research.
+
+Conventions are also a common motivation for analytical decisions. To the extent that conventions represent ideal ways of conducting research, this is probably a good thing. However, in cases where conventions reflect the calcified practices of research communities and not best practices, appeals to convention can be no more justified than instances of suppression.
+
+Domain-specific factors based on the researcher's knowledge are a prevalent reason for decision-making. These mostly revolve around making sure that the analysis treats the content of the review in a way that is practically meaningful. (There are some interesting examples about how our participants who study behavioral interventions set up their operational definitions and incorporate different kinds of study designs into their review.)
+
+Social factors through which communication and coordination among indiduals are improved are the least common motivational theme for analytical decision-making, but their presence reflects the fact that research is a social endeavor.
+
+### Reasons for Each Decision-Making Strategy
+
+Let's take a look at the frequencies of motivational themes for each kind of strategy.
+
+```{r}
+# add column to data table of strategies for type of mention
+d.motive.strat <- cbind(d.motive,"Strategy"=c("All","All","All","All","All","All"))
+
+# get counts of motivations for each strategy:
+# acknowledge
+codes.acknowledge <- codes %>% filter(Strategy=="Acknowledge")
+d.motive.strat <- rbind(d.motive.strat, data.frame(
+  "Motivation"=c("Principles","Social Factors","Domain-Specific Factors","Conventions","Self-Imposed Constraints","External Constraints"),
+  "Frequency"=c(sum(codes.acknowledge$Motivation=="Principles"),sum(codes.acknowledge$Motivation=="Social Factors"),sum(codes.acknowledge$Motivation=="Domain-Specific Factors"),sum(codes.acknowledge$Motivation=="Conventions"),sum(codes.acknowledge$Motivation=="Self-Imposed Constraints"),sum(codes.acknowledge$Motivation=="External Constraints")),
+  "Percent"=c(sum(codes.acknowledge$Motivation=="Principles"),sum(codes.acknowledge$Motivation=="Social Factors"),sum(codes.acknowledge$Motivation=="Domain-Specific Factors"),sum(codes.acknowledge$Motivation=="Conventions"),sum(codes.acknowledge$Motivation=="Self-Imposed Constraints"),sum(codes.acknowledge$Motivation=="External Constraints"))/length(codes.acknowledge$Decision)*100,
+  "Strategy"=c("Acknowledge","Acknowledge","Acknowledge","Acknowledge","Acknowledge","Acknowledge")
+))
+# reduce
+codes.reduce <- codes %>% filter(Strategy=="Reduce")
+d.motive.strat <- rbind(d.motive.strat, data.frame(
+  "Motivation"=c("Principles","Social Factors","Domain-Specific Factors","Conventions","Self-Imposed Constraints","External Constraints"),
+  "Frequency"=c(sum(codes.reduce$Motivation=="Principles"),sum(codes.reduce$Motivation=="Social Factors"),sum(codes.reduce$Motivation=="Domain-Specific Factors"),sum(codes.reduce$Motivation=="Conventions"),sum(codes.reduce$Motivation=="Self-Imposed Constraints"),sum(codes.reduce$Motivation=="External Constraints")),
+  "Percent"=c(sum(codes.reduce$Motivation=="Principles"),sum(codes.reduce$Motivation=="Social Factors"),sum(codes.reduce$Motivation=="Domain-Specific Factors"),sum(codes.reduce$Motivation=="Conventions"),sum(codes.reduce$Motivation=="Self-Imposed Constraints"),sum(codes.reduce$Motivation=="External Constraints"))/length(codes.reduce$Decision)*100,
+  "Strategy"=c("Reduce","Reduce","Reduce","Reduce","Reduce","Reduce")
+))
+# suppress
+codes.suppress <- codes %>% filter(Strategy=="Suppress")
+d.motive.strat <- rbind(d.motive.strat, data.frame(
+  "Motivation"=c("Principles","Social Factors","Domain-Specific Factors","Conventions","Self-Imposed Constraints","External Constraints"),
+  "Frequency"=c(sum(codes.suppress$Motivation=="Principles"),sum(codes.suppress$Motivation=="Social Factors"),sum(codes.suppress$Motivation=="Domain-Specific Factors"),sum(codes.suppress$Motivation=="Conventions"),sum(codes.suppress$Motivation=="Self-Imposed Constraints"),sum(codes.suppress$Motivation=="External Constraints")),
+  "Percent"=c(sum(codes.suppress$Motivation=="Principles"),sum(codes.suppress$Motivation=="Social Factors"),sum(codes.suppress$Motivation=="Domain-Specific Factors"),sum(codes.suppress$Motivation=="Conventions"),sum(codes.suppress$Motivation=="Self-Imposed Constraints"),sum(codes.suppress$Motivation=="External Constraints"))/length(codes.suppress$Decision)*100,
+  "Strategy"=c("Suppress","Suppress","Suppress","Suppress","Suppress","Suppress")
+))
+```
+
+```{r echo=FALSE}
+ggplot(d.motive.strat, aes(x=Motivation,y=Frequency)) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
+  facet_wrap(~ Strategy)
+
+ggplot(d.motive.strat, aes(x="", y=Percent, fill=Motivation)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  # geom_text(aes(label = round(Percent,digits=1)), size=4) +
+  theme_minimal() + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
+  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank()) +
+  facet_wrap(~ Strategy)
+```
+
+While the sixe motivational themes are somewhat balanced in their overall prevalence, we can see that certain motivations more often correspond with different kinds of decision-making strategies. 
+
+Decisions to acknowledge uncertainty tend to be motivated by principles, domain-specific factors, and (to a lesser extend) self-imposed constraints. This reflects the use of the acknowledgment strategy to orient research toward particular goals and away from known pitfalls. 
+
+In contrast, decisions to suppress uncertaint tend to be motivated by external constrains and (to a lesser extend) self-imposed constraints. This reflects the fact that constraints on the research process are a threat to the validity of research, particularly when constraints are arbitrary. Software tools should help researchers stay aware of how external constraints in particular exert limitations on the research process so that researchers can offer a comprehensive set of caveats in their written report.
+
+Decisions to reduce uncertainty are relatively balanced in their motivations, tending slightly more toward self-imposed constraints, conventions, and social factors and less toward principles, domain-specific factors, and external constraints than the overall frequency of motivations. That decisions to reduce uncertainty tend to follow self-imposed constraints, conventions, and social factors reflects their rule-based nature and their specificity. Often, self-imposed constraints, conventions, and social factors call for _specific courses of action_ like assumptions, procedures, or interpretable modes of communication which follow from research questions, caution, preference, or standards of practice.
