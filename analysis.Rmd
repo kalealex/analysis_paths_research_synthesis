@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 library(ggplot2)
 library(dplyr)
+# library(ggstance) # devtools::install_github("lionel-/ggstance")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -37,7 +38,11 @@ d.strat <- data.frame(
 ```
 
 ```{r echo=FALSE}
-ggplot(d.strat, aes(x=Strategy,y=Frequency)) + geom_bar(stat = 'identity') + geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + theme(panel.background = element_blank(), axis.line = element_line(colour = "black"))
+ggplot(d.strat, aes(x=Strategy,y=Frequency)) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, hjust=-0.35) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
+  coord_flip()
 ```
 
 This is approximately what we would hope to see insofar as decisions to reduce uncertainty are most prevalent and decisions to suppress uncertainty are least prevalent.
@@ -78,11 +83,12 @@ d.strat.mention <- rbind(d.strat.mention, data.frame(
 ```
 
 ```{r echo=FALSE}
-ggplot(d.strat.mention, aes(x=Strategy,y=Frequency)) + 
+ggplot(d.strat.mention, aes(x=Strategy, y=Frequency, fill=Strategy)) + 
   geom_bar(stat = 'identity') + 
-  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
-  facet_grid(~ Mention)
+  geom_text(aes(label=Frequency), position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank()) + 
+  facet_grid(~ Mention) +
+  coord_flip()
 
 ggplot(d.strat.mention, aes(x="", y=Percent, fill=Strategy)) +
   geom_bar(width = 1, stat = "identity") +
@@ -90,7 +96,7 @@ ggplot(d.strat.mention, aes(x="", y=Percent, fill=Strategy)) +
   # geom_text(aes(label = round(Percent,digits=1)), size=4) +
   theme_minimal() + 
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
-  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank()) +
+  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank(), strip.background = element_blank()) +
   facet_grid(~ Mention)
 ```
 
@@ -124,11 +130,12 @@ d.strat.impact <- rbind(d.strat.impact, data.frame(
 ```
 
 ```{r echo=FALSE}
-ggplot(d.strat.impact, aes(x=Strategy,y=Frequency)) + 
+ggplot(d.strat.impact, aes(x=Strategy,y=Frequency,fill=Strategy)) + 
   geom_bar(stat = 'identity') + 
-  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
-  facet_grid(~ Impact)
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank()) + 
+  facet_grid(~ Impact) +
+  coord_flip()
 
 ggplot(d.strat.impact, aes(x="", y=Percent, fill=Strategy)) +
   geom_bar(width = 1, stat = "identity") +
@@ -136,7 +143,7 @@ ggplot(d.strat.impact, aes(x="", y=Percent, fill=Strategy)) +
   # geom_text(aes(label = round(Percent,digits=1)), size=4) +
   theme_minimal() + 
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
-  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank()) +
+  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank(), strip.background = element_blank()) +
   facet_grid(~ Impact)
 ```
 
@@ -225,11 +232,12 @@ d.strat.stage <- rbind(d.strat.stage, data.frame(
 ```
 
 ```{r echo=FALSE}
-ggplot(d.strat.stage, aes(x=Strategy,y=Frequency)) + 
+ggplot(d.strat.stage, aes(x=Strategy,y=Frequency,fill=Strategy)) + 
   geom_bar(stat = 'identity') + 
-  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
-  facet_wrap(~ Stage)
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank()) + 
+  facet_wrap(~ Stage) +
+  coord_flip()
 
 ggplot(d.strat.stage, aes(x="", y=Percent, fill=Strategy)) +
   geom_bar(width = 1, stat = "identity") +
@@ -237,7 +245,7 @@ ggplot(d.strat.stage, aes(x="", y=Percent, fill=Strategy)) +
   # geom_text(aes(label = round(Percent,digits=1)), size=4) +
   theme_minimal() + 
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
-  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank()) +
+  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank(), strip.background = element_blank()) +
   facet_wrap(~ Stage)
 ```
 
@@ -328,27 +336,26 @@ d.motive <- data.frame(
 ```{r echo=FALSE}
 ggplot(d.motive, aes(x=Motivation,y=Frequency)) + 
   geom_bar(stat = 'identity') + 
-  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"))
-```
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  coord_flip()
 
-```{r echo=FALSE}
-ggplot(codes, aes(x=Motivation,fill=Reason)) + 
-  geom_bar(stat = 'count') + 
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"))
-```
+# ggplot(codes, aes(x=Motivation,fill=Reason)) + 
+#   geom_bar(stat = 'count') + 
+#   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
-```{r echo=FALSE}
-# this one is kinda weird
+# this one is kinda weird, but I find it helpful when it's enlarged in a separate window
 ggplot(codes, aes(x=factor(1),fill=Reason)) + 
   geom_bar(width = 1) + 
   coord_polar("y", start = 0) +
   theme_minimal() + 
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
-  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank()) +
+  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank(), strip.background = element_blank()) +
   facet_wrap(~ Motivation)
 ```
 
+^ This faceted pie chart is helpful if you open and enlarge it in a separate window. 
+ 
 (I can provide examples of each of the following once we decide what to highlight in the paper.)
 
 Interestingly self-imposed constaints are the most common motivation for analytical decision-making. This is driven in large part by the influence of research questions. Once a researcher defines their questions and objectives, many other analytical decisions follow. This highlights the importance of early planning in research. 
@@ -401,9 +408,10 @@ d.motive.strat <- rbind(d.motive.strat, data.frame(
 ```{r echo=FALSE}
 ggplot(d.motive.strat, aes(x=Motivation,y=Frequency)) + 
   geom_bar(stat = 'identity') + 
-  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, vjust=-0.35) + 
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
-  facet_wrap(~ Strategy)
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank()) + 
+  facet_wrap(~ Strategy) + 
+  coord_flip()
 
 ggplot(d.motive.strat, aes(x="", y=Percent, fill=Motivation)) +
   geom_bar(width = 1, stat = "identity") +
@@ -415,7 +423,7 @@ ggplot(d.motive.strat, aes(x="", y=Percent, fill=Motivation)) +
   facet_wrap(~ Strategy)
 ```
 
-While the sixe motivational themes are somewhat balanced in their overall prevalence, we can see that certain motivations more often correspond with different kinds of decision-making strategies. 
+While the six motivational themes are somewhat balanced in their overall prevalence, we can see that certain motivations more often correspond with different kinds of decision-making strategies. 
 
 Decisions to acknowledge uncertainty tend to be motivated by principles, domain-specific factors, and (to a lesser extend) self-imposed constraints. This reflects the use of the acknowledgment strategy to orient research toward particular goals and away from known pitfalls. 
 
