@@ -341,8 +341,8 @@ ggplot(d.motive, aes(x=Motivation,y=Frequency)) +
 
 ggplot(codes, aes(x=Reason)) +
   geom_bar(stat = 'count') +
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank()) +
-  facet_grid(~ Motivation) +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank(), strip.text.y = element_text(angle = 0)) +
+  facet_grid(Motivation ~ ., scales = "free", space = "free") +
   coord_flip()
 
 # this one is kinda weird, but I find it helpful when it's enlarged in a separate window
