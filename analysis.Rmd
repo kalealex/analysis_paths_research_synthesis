@@ -269,11 +269,11 @@ We use these six themes to characterize why researchers make analytical decision
 
 - Consistency
 - Reproducibility
-- Completeness
+- Comprehensiveness
 
 *Social Factors*: strictly communicative or interpersonal influences on decision-making.
 
-- Confidence through concensus
+- Confidence through consensus
 - Ease of understanding
 
 *Domain-Specific Factors*: concerns related to the specific domain under study.
@@ -284,7 +284,7 @@ We use these six themes to characterize why researchers make analytical decision
 *Conventions*: standards of practice which reflect established knowledge about research practices.
 
 - Statistical power
-- Convention
+- Standard practice
 
 *Self-Imposed Constraints*: factors which are under the control of the individual researcher.
 
@@ -307,10 +307,10 @@ We use these six themes to characterize why researchers make analytical decision
 ```{r}
 # add a column to the data table for motivations
 codes$Motivation <- with(codes, 
-                         ifelse(Reason %in% c("Consistency", "Reproducibility", "Completeness"), "Principles",
-                            ifelse(Reason %in% c("Confidence through concensus", "Ease of understanding"), "Social Factors",
+                         ifelse(Reason %in% c("Consistency", "Reproducibility", "Comprehensiveness"), "Principles",
+                            ifelse(Reason %in% c("Confidence through consensus", "Ease of understanding"), "Social Factors",
                                ifelse(Reason %in% c("Domain knowledge", "Conceptual clarity"), "Domain-Specific Factors",
-                                  ifelse(Reason %in% c("Statistical power", "Convention"), "Conventions",
+                                  ifelse(Reason %in% c("Statistical power", "Standard practice"), "Conventions",
                                      ifelse(Reason %in% c("Research questions", "Caution", "Preference", "Lack of knowledge"), "Self-Imposed Constraints",
                                         "External Constraints"
                                      )
@@ -319,7 +319,6 @@ codes$Motivation <- with(codes,
                             )
                          )
                     )
-
 ```
 
 ### Frequency of Reasons and Motivational Themes
@@ -340,31 +339,33 @@ ggplot(d.motive, aes(x=Motivation,y=Frequency)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) +
   coord_flip()
 
-# ggplot(codes, aes(x=Motivation,fill=Reason)) + 
-#   geom_bar(stat = 'count') + 
-#   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"))
+ggplot(codes, aes(x=Reason)) +
+  geom_bar(stat = 'count') +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank()) +
+  facet_grid(~ Motivation) +
+  coord_flip()
 
 # this one is kinda weird, but I find it helpful when it's enlarged in a separate window
-ggplot(codes, aes(x=factor(1),fill=Reason)) + 
-  geom_bar(width = 1) + 
-  coord_polar("y", start = 0) +
-  theme_minimal() + 
-  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
-  axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank(), strip.background = element_blank()) +
-  facet_wrap(~ Motivation)
+# ggplot(codes, aes(x=factor(1),fill=Reason)) + 
+#   geom_bar(width = 1) + 
+#   coord_polar("y", start = 0) +
+#   theme_minimal() + 
+#   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
+#   axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank(), strip.background = element_blank()) +
+#   facet_wrap(~ Motivation)
 ```
 
-^ This faceted pie chart is helpful if you open and enlarge it in a separate window. 
+<!-- ^ This faceted pie chart is helpful if you open and enlarge it in a separate window.  -->
  
 (I can provide examples of each of the following once we decide what to highlight in the paper.)
 
 Interestingly self-imposed constaints are the most common motivation for analytical decision-making. This is driven in large part by the influence of research questions. Once a researcher defines their questions and objectives, many other analytical decisions follow. This highlights the importance of early planning in research. 
 
-A similarly prevalent reason for decision-making is completeness, the idea that a researcher should cover their bases and put together a comprehensive analysis. The drive for completeness contributes heavily to the high frequency decisions motivated by principles.
+A similarly prevalent reason for decision-making is comprehensiveness, the idea that a researcher should cover their bases and put together a comprehensive analysis. The drive for comprehensiveness contributes heavily to the high frequency decisions motivated by principles.
 
 A myriad of external constraints, factors beyond the researchers' control, impact the analysis paths taken by researchers. The two most common reasons of this kind are limited availability of information and limited time and attention to devote to the research. These kinds of situational constraints often represent threats to the validity of research.
 
-Conventions are also a common motivation for analytical decisions. To the extent that conventions represent ideal ways of conducting research, this is probably a good thing. However, in cases where conventions reflect the calcified practices of research communities and not best practices, appeals to convention can be no more justified than instances of suppression.
+Conventions are also a common motivation for analytical decisions. To the extent that standard practices represent ideal ways of conducting research, this is probably a good thing. However, in cases where conventions reflect the calcified practices of research communities and not best practices, appeals to standard practice can be no more justified than instances of suppression.
 
 Domain-specific factors based on the researcher's knowledge are a prevalent reason for decision-making. These mostly revolve around making sure that the analysis treats the content of the review in a way that is practically meaningful. (There are some interesting examples about how our participants who study behavioral interventions set up their operational definitions and incorporate different kinds of study designs into their review.)
 
@@ -430,3 +431,11 @@ Decisions to acknowledge uncertainty tend to be motivated by principles, domain-
 In contrast, decisions to suppress uncertaint tend to be motivated by external constrains and (to a lesser extend) self-imposed constraints. This reflects the fact that constraints on the research process are a threat to the validity of research, particularly when constraints are arbitrary. Software tools should help researchers stay aware of how external constraints in particular exert limitations on the research process so that researchers can offer a comprehensive set of caveats in their written report.
 
 Decisions to reduce uncertainty are relatively balanced in their motivations, tending slightly more toward self-imposed constraints, conventions, and social factors and less toward principles, domain-specific factors, and external constraints than the overall frequency of motivations. That decisions to reduce uncertainty tend to follow self-imposed constraints, conventions, and social factors reflects their rule-based nature and their specificity. Often, self-imposed constraints, conventions, and social factors call for _specific courses of action_ like assumptions, procedures, or interpretable modes of communication which follow from research questions, caution, preference, or standards of practice.
+
+## Software Design Needs
+
+Here are list of things that our participants say they need from software tools to support research synthesis.
+
+```{r}
+unique(codes$Need)
+```
