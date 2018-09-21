@@ -176,70 +176,75 @@ d.strat.stage <- cbind(d.strat,"Stage"=c("Overall","Overall","Overall"))
 # questions
 codes.questions <- codes %>% filter(Stage.of.Analysis=="Defining questions and objectives")
 d.strat.stage <- rbind(d.strat.stage, data.frame(
-  "Strategy"=c('Acknowledge','Reduce','Suppress'),
-  "Frequency"=c(sum(codes.questions$Strategy=='Acknowledge'),sum(codes.questions$Strategy=='Reduce'),sum(codes.questions$Strategy=='Suppress')),
-  "Percent"=c(sum(codes.questions$Strategy=='Acknowledge'),sum(codes.questions$Strategy=='Reduce'),sum(codes.questions$Strategy=='Suppress'))/length(codes.questions$Decision)*100,
-  "Stage"=c("Define Questions","Define Questions","Define Questions")
+  "Strategy"=c('Acknowledge','Reduce','Suppress','All'),
+  "Frequency"=c(sum(codes.questions$Strategy=='Acknowledge'),sum(codes.questions$Strategy=='Reduce'),sum(codes.questions$Strategy=='Suppress'),length(codes.questions$Decision)),
+  "Percent"=c(sum(codes.questions$Strategy=='Acknowledge'),sum(codes.questions$Strategy=='Reduce'),sum(codes.questions$Strategy=='Suppress'),length(codes.questions$Decision))/length(codes.questions$Decision)*100,
+  "Stage"=c("Define Questions","Define Questions","Define Questions","Define Questions")
 ))
 # literature review
 codes.review <- codes %>% filter(Stage.of.Analysis=="Literature review")
 d.strat.stage <- rbind(d.strat.stage, data.frame(
-  "Strategy"=c('Acknowledge','Reduce','Suppress'),
-  "Frequency"=c(sum(codes.review$Strategy=='Acknowledge'),sum(codes.review$Strategy=='Reduce'),sum(codes.review$Strategy=='Suppress')),
-  "Percent"=c(sum(codes.review$Strategy=='Acknowledge'),sum(codes.review$Strategy=='Reduce'),sum(codes.review$Strategy=='Suppress'))/length(codes.review$Decision)*100,
-  "Stage"=c("Lit Review","Lit Review","Lit Review")
+  "Strategy"=c('Acknowledge','Reduce','Suppress','All'),
+  "Frequency"=c(sum(codes.review$Strategy=='Acknowledge'),sum(codes.review$Strategy=='Reduce'),sum(codes.review$Strategy=='Suppress'),length(codes.review$Decision)),
+  "Percent"=c(sum(codes.review$Strategy=='Acknowledge'),sum(codes.review$Strategy=='Reduce'),sum(codes.review$Strategy=='Suppress'),length(codes.review$Decision))/length(codes.review$Decision)*100,
+  "Stage"=c("Lit Review","Lit Review","Lit Review","Lit Review")
 ))
 # data collection
 codes.collect <- codes %>% filter(Stage.of.Analysis=="Data collection")
 d.strat.stage <- rbind(d.strat.stage, data.frame(
-  "Strategy"=c('Acknowledge','Reduce','Suppress'),
-  "Frequency"=c(sum(codes.collect$Strategy=='Acknowledge'),sum(codes.collect$Strategy=='Reduce'),sum(codes.collect$Strategy=='Suppress')),
-  "Percent"=c(sum(codes.collect$Strategy=='Acknowledge'),sum(codes.collect$Strategy=='Reduce'),sum(codes.collect$Strategy=='Suppress'))/length(codes.collect$Decision)*100,
-  "Stage"=c("Data Collection","Data Collection","Data Collection")
+  "Strategy"=c('Acknowledge','Reduce','Suppress','All'),
+  "Frequency"=c(sum(codes.collect$Strategy=='Acknowledge'),sum(codes.collect$Strategy=='Reduce'),sum(codes.collect$Strategy=='Suppress'),length(codes.collect$Decision)),
+  "Percent"=c(sum(codes.collect$Strategy=='Acknowledge'),sum(codes.collect$Strategy=='Reduce'),sum(codes.collect$Strategy=='Suppress'),length(codes.collect$Decision))/length(codes.collect$Decision)*100,
+  "Stage"=c("Data Collection","Data Collection","Data Collection","Data Collection")
 ))
 # meta-analysis
 codes.meta <- codes %>% filter(Stage.of.Analysis=="Meta-analysis")
 d.strat.stage <- rbind(d.strat.stage, data.frame(
-  "Strategy"=c('Acknowledge','Reduce','Suppress'),
-  "Frequency"=c(sum(codes.meta$Strategy=='Acknowledge'),sum(codes.meta$Strategy=='Reduce'),sum(codes.meta$Strategy=='Suppress')),
-  "Percent"=c(sum(codes.meta$Strategy=='Acknowledge'),sum(codes.meta$Strategy=='Reduce'),sum(codes.meta$Strategy=='Suppress'))/length(codes.meta$Decision)*100,
-  "Stage"=c("Meta-Analysis","Meta-Analysis","Meta-Analysis")
+  "Strategy"=c('Acknowledge','Reduce','Suppress','All'),
+  "Frequency"=c(sum(codes.meta$Strategy=='Acknowledge'),sum(codes.meta$Strategy=='Reduce'),sum(codes.meta$Strategy=='Suppress'),length(codes.meta$Decision)),
+  "Percent"=c(sum(codes.meta$Strategy=='Acknowledge'),sum(codes.meta$Strategy=='Reduce'),sum(codes.meta$Strategy=='Suppress'),length(codes.meta$Decision))/length(codes.meta$Decision)*100,
+  "Stage"=c("Meta-Analysis","Meta-Analysis","Meta-Analysis","Meta-Analysis")
 ))
 # quantitative analysis
 codes.quant <- codes %>% filter(Stage.of.Analysis=="Quantitative Analysis")
 d.strat.stage <- rbind(d.strat.stage, data.frame(
-  "Strategy"=c('Acknowledge','Reduce','Suppress'),
-  "Frequency"=c(sum(codes.quant$Strategy=='Acknowledge'),sum(codes.quant$Strategy=='Reduce'),sum(codes.quant$Strategy=='Suppress')),
-  "Percent"=c(sum(codes.quant$Strategy=='Acknowledge'),sum(codes.quant$Strategy=='Reduce'),sum(codes.quant$Strategy=='Suppress'))/length(codes.quant$Decision)*100,
-  "Stage"=c("Quant Analysis","Quant Analysis","Quant Analysis")
+  "Strategy"=c('Acknowledge','Reduce','Suppress','All'),
+  "Frequency"=c(sum(codes.quant$Strategy=='Acknowledge'),sum(codes.quant$Strategy=='Reduce'),sum(codes.quant$Strategy=='Suppress'),length(codes.quant$Decision)),
+  "Percent"=c(sum(codes.quant$Strategy=='Acknowledge'),sum(codes.quant$Strategy=='Reduce'),sum(codes.quant$Strategy=='Suppress'),length(codes.quant$Decision))/length(codes.quant$Decision)*100,
+  "Stage"=c("Quant Analysis","Quant Analysis","Quant Analysis","Quant Analysis")
 ))
 # qualitative analysis
 codes.qual <- codes %>% filter(Stage.of.Analysis=="Qualitative analysis")
 d.strat.stage <- rbind(d.strat.stage, data.frame(
-  "Strategy"=c('Acknowledge','Reduce','Suppress'),
-  "Frequency"=c(sum(codes.qual$Strategy=='Acknowledge'),sum(codes.qual$Strategy=='Reduce'),sum(codes.qual$Strategy=='Suppress')),
-  "Percent"=c(sum(codes.qual$Strategy=='Acknowledge'),sum(codes.qual$Strategy=='Reduce'),sum(codes.qual$Strategy=='Suppress'))/length(codes.qual$Decision)*100,
-  "Stage"=c("Qual Analysis","Qual Analysis","Qual Analysis")
+  "Strategy"=c('Acknowledge','Reduce','Suppress','All'),
+  "Frequency"=c(sum(codes.qual$Strategy=='Acknowledge'),sum(codes.qual$Strategy=='Reduce'),sum(codes.qual$Strategy=='Suppress'),length(codes.qual$Decision)),
+  "Percent"=c(sum(codes.qual$Strategy=='Acknowledge'),sum(codes.qual$Strategy=='Reduce'),sum(codes.qual$Strategy=='Suppress'),length(codes.qual$Decision))/length(codes.qual$Decision)*100,
+  "Stage"=c("Qual Analysis","Qual Analysis","Qual Analysis","Qual Analysis")
 ))
 # communication
 codes.comm <- codes %>% filter(Stage.of.Analysis=="Communication")
 d.strat.stage <- rbind(d.strat.stage, data.frame(
-  "Strategy"=c('Acknowledge','Reduce','Suppress'),
-  "Frequency"=c(sum(codes.comm$Strategy=='Acknowledge'),sum(codes.comm$Strategy=='Reduce'),sum(codes.comm$Strategy=='Suppress')),
-  "Percent"=c(sum(codes.comm$Strategy=='Acknowledge'),sum(codes.comm$Strategy=='Reduce'),sum(codes.comm$Strategy=='Suppress'))/length(codes.comm$Decision)*100,
-  "Stage"=c("Communication","Communication","Communication")
+  "Strategy"=c('Acknowledge','Reduce','Suppress','All'),
+  "Frequency"=c(sum(codes.comm$Strategy=='Acknowledge'),sum(codes.comm$Strategy=='Reduce'),sum(codes.comm$Strategy=='Suppress'),length(codes.comm$Decision)),
+  "Percent"=c(sum(codes.comm$Strategy=='Acknowledge'),sum(codes.comm$Strategy=='Reduce'),sum(codes.comm$Strategy=='Suppress'),length(codes.comm$Decision))/length(codes.comm$Decision)*100,
+  "Stage"=c("Communication","Communication","Communication","Communication")
 ))
 ```
 
 ```{r echo=FALSE}
-ggplot(d.strat.stage, aes(x=Strategy,y=Frequency,fill=Strategy)) + 
+# frequencies as bars
+d.strat.stage %>% filter(!Strategy %in% "All") %>%
+  ggplot(aes(x=Strategy,y=Frequency,fill=Strategy)) + 
   geom_bar(stat = 'identity') + 
   geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank()) + 
+  theme_minimal() +
+  theme(panel.background = element_blank()) +
   facet_wrap(~ Stage) +
   coord_flip()
 
-ggplot(d.strat.stage, aes(x="", y=Percent, fill=Strategy)) +
+# proportions as pies
+d.strat.stage %>% filter(!Strategy %in% "All") %>%
+  ggplot(aes(x="", y=Percent, fill=Strategy)) +
   geom_bar(width = 1, stat = "identity") +
   coord_polar("y", start = 0) +
   # geom_text(aes(label = round(Percent,digits=1)), size=4) +
@@ -247,6 +252,33 @@ ggplot(d.strat.stage, aes(x="", y=Percent, fill=Strategy)) +
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
   axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank(), strip.background = element_blank()) +
   facet_wrap(~ Stage)
+```
+
+```{r}
+# figures for export to ai
+
+# total frequencies at each stage as bars
+freqStages <- d.strat.stage %>% filter(Strategy %in% "All") %>%
+  ggplot(aes(x=Stage, y=Frequency)) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
+  theme_minimal() +
+  theme(panel.background = element_blank()) +
+  coord_flip()
+
+ggsave(freqStages, file = "frequenciesStagesTotal.svg", width = 2, height = 3, units = "in")
+
+# proportions as stacked bars
+propStages <- d.strat.stage %>% filter(!Strategy %in% "All") %>%
+  ggplot(aes(x=Stage, y=Percent,fill=Strategy)) + 
+  geom_bar(stat = 'identity') + 
+  # geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4) + 
+  scale_fill_brewer(type = "qual", palette = 1, aesthetics = "fill") +
+  theme_minimal() +
+  # theme(panel.background = element_blank(), axis.title.y=element_blank(), axis.text.y=element_blank()) +
+  coord_flip()
+
+ggsave(propStages, file = "proportionsStagesStacked.svg", width = 2, height = 3, units = "in")
 ```
 
 Note that participants used an acknowledgement strategy far more often when defining questions and objectives than they did overall. Multiple participants expressed that they felt this was the most important stage of the research process, so it makes sense that they would spend a lot of time surveying different possible directions and preempting potential issues at this stage in their research. We also see relatively more acknowledgement during literature review, quantitative analysis, and communication than in data collection and meta-analysis. This may reflect the the fact that plans from the outset of an analysis do relatively less to constrain literature review, quantitative analysis, and communication of the review than data collection and meta-analysis. Researchers feel that they need to explore their options when specific mechanisms for reduction (e.g., specific search terms, specific variables to code) are not selected at the outset of the research process. This exploration is a double-edged sword since it no doubt contributes to researcher degrees of freedom in the traditional sense, but it can also serve as a justifiable way for the researcher to orient their analysis toward a practical result. (I'll find a specific example or two to illustrate this idea in the paper.)
@@ -344,6 +376,16 @@ ggplot(codes, aes(x=Reason)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank(), strip.text.y = element_text(angle = 0)) +
   facet_grid(Motivation ~ ., scales = "free", space = "free") +
   coord_flip()
+
+motivations <- ggplot(codes, aes(x=Reason)) +
+  geom_bar(stat = 'count') +
+  theme_minimal() +
+  theme(panel.background = element_blank(), strip.background = element_blank(), strip.text.y = element_text(angle = 0)) +
+  facet_grid(Motivation ~ ., scales = "free", space = "free") +
+  coord_flip()
+
+# saving
+ggsave(motivations, file = "motivations.svg", width = 7, height = 3, units = "in")
 
 # this one is kinda weird, but I find it helpful when it's enlarged in a separate window
 # ggplot(codes, aes(x=factor(1),fill=Reason)) + 
