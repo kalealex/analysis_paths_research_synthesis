@@ -45,11 +45,13 @@ ggplot(d.strat, aes(x=Strategy,y=Frequency)) +
   coord_flip()
 ```
 
-This is approximately what we would hope to see insofar as decisions to reduce uncertainty are most prevalent and decisions to suppress uncertainty are least prevalent.
+This is approximately what we would expect to see insofar as decisions to reduce uncertainty are most prevalent and decisions to suppress uncertainty are least prevalent.
 
 ### Frequencies of Strategies by Context of Mention
 
-Let's take a look at all decisions vs firsthand accounts vs secondhand accounts vs hypothetical scenarios to see if there is a difference in the distribution of strategies. We'll look at percentages as well as raw frequencies of decisions.
+Let's take a look at all decisions vs firsthand accounts vs secondhand accounts vs hypothetical scenarios to see if there is a difference in the distribution of strategies. This was a factor we considered in our analysis which was not presented in the paper. 
+
+We'll look at percentages as well as raw frequencies of decisions.
 
 ```{r}
 # add column to data table of strategies for type of mention
@@ -85,6 +87,7 @@ d.strat.mention <- rbind(d.strat.mention, data.frame(
 ```{r echo=FALSE}
 ggplot(d.strat.mention, aes(x=Strategy, y=Frequency, fill=Strategy)) + 
   geom_bar(stat = 'identity') + 
+  scale_fill_brewer(type = "qual", palette = 1, aesthetics = "fill") +
   geom_text(aes(label=Frequency), position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank()) + 
   facet_grid(~ Mention) +
@@ -93,6 +96,7 @@ ggplot(d.strat.mention, aes(x=Strategy, y=Frequency, fill=Strategy)) +
 ggplot(d.strat.mention, aes(x="", y=Percent, fill=Strategy)) +
   geom_bar(width = 1, stat = "identity") +
   coord_polar("y", start = 0) +
+  scale_fill_brewer(type = "qual", palette = 1, aesthetics = "fill") +
   # geom_text(aes(label = round(Percent,digits=1)), size=4) +
   theme_minimal() + 
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
@@ -100,11 +104,13 @@ ggplot(d.strat.mention, aes(x="", y=Percent, fill=Strategy)) +
   facet_grid(~ Mention)
 ```
 
-We can see the distibution of decisions across our three kinds of strategies is relatively similar regardless of the kind of mention. Note that the set of all decisions regardless of mention resembles the subsets of firsthand accounts and hypothetical scenarios only. With only 10 observations, it is hard to say much about secondhand accounts based on our codes. Looking at the pie charts showing proportions of each strategy for each kind of mention, we can see that our participants used a strategy of acknowledging uncertainty relatively more, and used a strategy of reducing uncertainty relatively less, in hypothetical scenarios than in accounts of firsthand experiences. Perhaps the scenarios which were posed as hypotheticals by participants during our interviews were more often intractable situations where there was not a clear path to reduce uncertainty. (I will look for some examples if we want to talk about this in the paper.)
+We can see the distibution of decisions across our three kinds of strategies is relatively similar regardless of the kind of mention. Note that the set of all decisions regardless of mention resembles the subsets of firsthand accounts and hypothetical scenarios only. With only 10 observations, it is hard to say much about secondhand accounts based on our codes. Looking at the pie charts showing proportions of each strategy for each kind of mention, we can see that our participants used a strategy of acknowledging uncertainty relatively more, and used a strategy of reducing uncertainty relatively less, in hypothetical scenarios than in accounts of firsthand experiences. Perhaps the scenarios which were posed as hypotheticals by participants during our interviews were more often intractable situations where there was not a clear path to reduce uncertainty.
 
 ### Frequencies of Strategies by Direct vs Indirect Impact
 
-Let's look at the frequencies of strategies for decisions with direct vs indirect impact. We'll look at percentages as well as raw frequencies of decisions.
+Let's look at the frequencies of strategies for decisions with direct vs indirect impact. These statistics are reported in the text of the paper. 
+
+We'll look at percentages as well as raw frequencies of decisions.
 
 ```{r}
 # add column to data table of strategies for type of mention
@@ -132,6 +138,7 @@ d.strat.impact <- rbind(d.strat.impact, data.frame(
 ```{r echo=FALSE}
 ggplot(d.strat.impact, aes(x=Strategy,y=Frequency,fill=Strategy)) + 
   geom_bar(stat = 'identity') + 
+  scale_fill_brewer(type = "qual", palette = 1, aesthetics = "fill") +
   geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank()) + 
   facet_grid(~ Impact) +
@@ -140,6 +147,7 @@ ggplot(d.strat.impact, aes(x=Strategy,y=Frequency,fill=Strategy)) +
 ggplot(d.strat.impact, aes(x="", y=Percent, fill=Strategy)) +
   geom_bar(width = 1, stat = "identity") +
   coord_polar("y", start = 0) +
+  scale_fill_brewer(type = "qual", palette = 1, aesthetics = "fill") +
   # geom_text(aes(label = round(Percent,digits=1)), size=4) +
   theme_minimal() + 
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
@@ -236,6 +244,7 @@ d.strat.stage <- rbind(d.strat.stage, data.frame(
 d.strat.stage %>% filter(!Strategy %in% "All") %>%
   ggplot(aes(x=Strategy,y=Frequency,fill=Strategy)) + 
   geom_bar(stat = 'identity') + 
+  scale_fill_brewer(type = "qual", palette = 1, aesthetics = "fill") +
   geom_text(aes(label=Frequency),position=position_dodge(width=0.9), size=4, hjust=-0.15) + 
   theme_minimal() +
   theme(panel.background = element_blank()) +
@@ -247,12 +256,15 @@ d.strat.stage %>% filter(!Strategy %in% "All") %>%
   ggplot(aes(x="", y=Percent, fill=Strategy)) +
   geom_bar(width = 1, stat = "identity") +
   coord_polar("y", start = 0) +
+  scale_fill_brewer(type = "qual", palette = 1, aesthetics = "fill") +
   # geom_text(aes(label = round(Percent,digits=1)), size=4) +
   theme_minimal() + 
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
   axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank(), strip.background = element_blank()) +
   facet_wrap(~ Stage)
 ```
+
+Here's the code that we used to create the visualizations in Figure 2.
 
 ```{r}
 # figures for export to ai
@@ -281,7 +293,7 @@ propStages <- d.strat.stage %>% filter(!Strategy %in% "All") %>%
 ggsave(propStages, file = "proportionsStagesStacked.svg", width = 2, height = 3, units = "in")
 ```
 
-Note that participants used an acknowledgement strategy far more often when defining questions and objectives than they did overall. Multiple participants expressed that they felt this was the most important stage of the research process, so it makes sense that they would spend a lot of time surveying different possible directions and preempting potential issues at this stage in their research. We also see relatively more acknowledgement during literature review, quantitative analysis, and communication than in data collection and meta-analysis. This may reflect the the fact that plans from the outset of an analysis do relatively less to constrain literature review, quantitative analysis, and communication of the review than data collection and meta-analysis. Researchers feel that they need to explore their options when specific mechanisms for reduction (e.g., specific search terms, specific variables to code) are not selected at the outset of the research process. This exploration is a double-edged sword since it no doubt contributes to researcher degrees of freedom in the traditional sense, but it can also serve as a justifiable way for the researcher to orient their analysis toward a practical result. (I'll find a specific example or two to illustrate this idea in the paper.)
+Note that participants used an acknowledgement strategy far more often when defining questions and objectives than they did overall. Multiple participants expressed that they felt this was the most important stage of the research process, so it makes sense that they would spend a lot of time surveying different possible directions and preempting potential issues at this stage in their research. We also see relatively more acknowledgement during literature review, quantitative analysis, and communication than in data collection and meta-analysis. This may reflect the the fact that plans from the outset of an analysis do relatively less to constrain literature review, quantitative analysis, and communication of the review than data collection and meta-analysis. Researchers feel that they need to explore their options when specific mechanisms for reduction (e.g., specific search terms, specific variables to code) are not selected at the outset of the research process. This exploration is a double-edged sword since it no doubt contributes to researcher degrees of freedom, but it can also serve as a justifiable way for the researcher to orient their analysis toward a practical result.
 
 ## Reasons for Decision-Making
 
@@ -376,7 +388,11 @@ ggplot(codes, aes(x=Reason)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_blank(), strip.text.y = element_text(angle = 0)) +
   facet_grid(Motivation ~ ., scales = "free", space = "free") +
   coord_flip()
+```
 
+Here's the code we used to create the visualization in Figure 3.
+
+```{r}
 motivations <- ggplot(codes, aes(x=Reason)) +
   geom_bar(stat = 'count') +
   theme_minimal() +
@@ -386,20 +402,7 @@ motivations <- ggplot(codes, aes(x=Reason)) +
 
 # saving
 ggsave(motivations, file = "motivations.svg", width = 7, height = 3, units = "in")
-
-# this one is kinda weird, but I find it helpful when it's enlarged in a separate window
-# ggplot(codes, aes(x=factor(1),fill=Reason)) + 
-#   geom_bar(width = 1) + 
-#   coord_polar("y", start = 0) +
-#   theme_minimal() + 
-#   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
-#   axis.ticks = element_blank(), plot.title=element_text(size=14, face="bold"), axis.text.x=element_blank(), strip.background = element_blank()) +
-#   facet_wrap(~ Motivation)
 ```
-
-<!-- ^ This faceted pie chart is helpful if you open and enlarge it in a separate window.  -->
- 
-(I can provide examples of each of the following once we decide what to highlight in the paper.)
 
 Interestingly self-imposed constaints are the most common motivation for analytical decision-making. This is driven in large part by the influence of research questions. Once a researcher defines their questions and objectives, many other analytical decisions follow. This highlights the importance of early planning in research. 
 
@@ -415,7 +418,7 @@ Social factors through which communication and coordination among indiduals are 
 
 ### Reasons for Each Decision-Making Strategy
 
-Let's take a look at the frequencies of motivational themes for each kind of strategy.
+Let's take a look at the frequencies of motivational themes for each kind of strategy. These statistics are reported in the text of the paper.
 
 ```{r}
 # add column to data table of strategies for type of mention
@@ -459,6 +462,7 @@ ggplot(d.motive.strat, aes(x=Motivation,y=Frequency)) +
 ggplot(d.motive.strat, aes(x="", y=Percent, fill=Motivation)) +
   geom_bar(width = 1, stat = "identity") +
   coord_polar("y", start = 0) +
+  scale_fill_brewer(type = "qual", palette = 2, aesthetics = "fill") +
   # geom_text(aes(label = round(Percent,digits=1)), size=4) +
   theme_minimal() + 
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), panel.border = element_blank(), panel.grid=element_blank(),
@@ -470,7 +474,7 @@ While the six motivational themes are somewhat balanced in their overall prevale
 
 Decisions to acknowledge uncertainty tend to be motivated by principles, domain-specific factors, and (to a lesser extend) self-imposed constraints. This reflects the use of the acknowledgment strategy to orient research toward particular goals and away from known pitfalls. 
 
-In contrast, decisions to suppress uncertaint tend to be motivated by external constrains and (to a lesser extend) self-imposed constraints. This reflects the fact that constraints on the research process are a threat to the validity of research, particularly when constraints are arbitrary. Software tools should help researchers stay aware of how external constraints in particular exert limitations on the research process so that researchers can offer a comprehensive set of caveats in their written report.
+In contrast, decisions to suppress uncertainty tend to be motivated by external constrains and (to a lesser extend) self-imposed constraints. This reflects the fact that constraints on the research process are a threat to validity, particularly when constraints are arbitrary.
 
 Decisions to reduce uncertainty are relatively balanced in their motivations, tending slightly more toward self-imposed constraints, conventions, and social factors and less toward principles, domain-specific factors, and external constraints than the overall frequency of motivations. That decisions to reduce uncertainty tend to follow self-imposed constraints, conventions, and social factors reflects their rule-based nature and their specificity. Often, self-imposed constraints, conventions, and social factors call for _specific courses of action_ like assumptions, procedures, or interpretable modes of communication which follow from research questions, caution, preference, or standards of practice.
 
